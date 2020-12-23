@@ -28,8 +28,8 @@ fn main() -> io::Result<()> {
         .map(|l| l.parse::<i32>().unwrap_or(0))
         .collect();
 
-    if let Some((x, y)) = find_sum(&mut nums) {
-        println!("The product is: {} * {} = {}", x, y, x * y);
+    if let Some((x, y, z)) = find_sum(&mut nums) {
+        println!("The product is: {} * {} * {} = {}", x, y, z, x * y * z);
     } else {
         println!("No pair was found!");
     };
@@ -37,13 +37,15 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn find_sum(data: &mut [i32]) -> Option<(i32, i32)> {
+fn find_sum(data: &mut [i32]) -> Option<(i32, i32, i32)> {
     for i in 0..data.len() {
         for j in 0..data.len() {
-            if let (Some(a), Some(b)) = (data.get(i), data.get(j)) {
-                println!("{}: {} + {} = {}", i, a, b, a + b);
-                if a + b == 2020 {
-                    return Some((data[i], data[j]));
+            for k in 0..data.len() {
+                if let (Some(a), Some(b), Some(c)) = (data.get(i), data.get(j), data.get(k)) {
+                    if a + b + c == 2020 {
+                        println!("{} + {} + {} = {}", a, b, c, a + b + c);
+                        return Some((data[i], data[j], data[k]));
+                    }
                 }
             }
         }
