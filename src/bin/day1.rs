@@ -23,18 +23,33 @@ fn main() -> io::Result<()> {
 
     println!("Loaded {} lines", lines.len());
 
-    let mut nums: Vec<i32> = lines
+    let nums: Vec<i32> = lines
         .iter()
         .map(|l| l.parse::<i32>().unwrap_or(0))
         .collect();
 
-    if let Some((x, y, z)) = find_sum(&mut nums) {
-        println!("The product is: {} * {} * {} = {}", x, y, z, x * y * z);
+    if let Some((x, y)) = find_two_summands(&nums[0], &nums[1..], 2020) {
+        println!("The product is: {} * {} = {}", x, y, x * y);
     } else {
         println!("No pair was found!");
     };
 
     Ok(())
+}
+
+fn find_two_summands(cur: &i32, rest: &[i32], sum: i32) -> Option<(i32, i32)> {
+    if rest.is_empty() {
+        return None;
+    }
+
+    for add in rest {
+        if cur + add == sum {
+            println!("{} + {} = {}", cur, add, cur + add);
+            return Some((*cur, *add));
+        }
+    }
+
+    find_two_summands(&rest[0], &rest[1..], sum)
 }
 
 fn find_sum(data: &mut [i32]) -> Option<(i32, i32, i32)> {
