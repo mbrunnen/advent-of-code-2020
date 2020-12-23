@@ -28,8 +28,8 @@ fn main() -> io::Result<()> {
         .map(|l| l.parse::<i32>().unwrap_or(0))
         .collect();
 
-    if let Some((x, y)) = find_two_summands(&nums[0], &nums[1..], 2020) {
-        println!("The product is: {} * {} = {}", x, y, x * y);
+    if let Some((x, y, z)) = find_three_summands(&nums[0], &nums[1..], 2020) {
+        println!("The product is: {} * {} * {} = {}", x, y, z, x * y * z);
     } else {
         println!("No pair was found!");
     };
@@ -52,19 +52,16 @@ fn find_two_summands(cur: &i32, rest: &[i32], sum: i32) -> Option<(i32, i32)> {
     find_two_summands(&rest[0], &rest[1..], sum)
 }
 
-fn find_sum(data: &mut [i32]) -> Option<(i32, i32, i32)> {
-    for i in 0..data.len() {
-        for j in 0..data.len() {
-            for k in 0..data.len() {
-                if let (Some(a), Some(b), Some(c)) = (data.get(i), data.get(j), data.get(k)) {
-                    if a + b + c == 2020 {
-                        println!("{} + {} + {} = {}", a, b, c, a + b + c);
-                        return Some((data[i], data[j], data[k]));
-                    }
-                }
-            }
-        }
+fn find_three_summands(cur: &i32, rest: &[i32], sum: i32) -> Option<(i32, i32, i32)> {
+    if rest.is_empty() {
+        return None;
     }
 
-    None
+    let diff = sum - cur;
+    if let Some((add1, add2)) = find_two_summands(&rest[0], &rest[1..], diff) {
+        println!("{} + {} + {} = {}", cur, add1, add2, cur + add1 + add2);
+        return Some((*cur, add1, add2));
+    }
+
+    find_three_summands(&rest[0], &rest[1..], sum)
 }
