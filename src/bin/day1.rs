@@ -23,14 +23,31 @@ fn main() -> io::Result<()> {
 
     println!("Loaded {} lines", lines.len());
 
-    let nums: Vec<i32> = lines
+    let mut nums: Vec<i32> = lines
         .iter()
         .map(|l| l.parse::<i32>().unwrap_or(0))
         .collect();
 
-    for num in nums {
-        println!("{:?}", num);
-    }
+    if let Some((x, y)) = find_sum(&mut nums) {
+        println!("The product is: {} * {} = {}", x, y, x * y);
+    } else {
+        println!("No pair was found!");
+    };
 
     Ok(())
+}
+
+fn find_sum(data: &mut [i32]) -> Option<(i32, i32)> {
+    for i in 0..data.len() {
+        for j in 0..data.len() {
+            if let (Some(a), Some(b)) = (data.get(i), data.get(j)) {
+                println!("{}: {} + {} = {}", i, a, b, a + b);
+                if a + b == 2020 {
+                    return Some((data[i], data[j]));
+                }
+            }
+        }
+    }
+
+    None
 }
