@@ -40,6 +40,20 @@ impl PartialEq for Password {
 }
 
 impl Password {
+    fn is_at_position(&self, pos: usize) -> bool {
+        match self.password.chars().nth(pos - 1) {
+            Some(ch) => ch == self.character,
+            None => false,
+        }
+    }
+
+    fn is_valid_by_position(&self) -> bool {
+        let lower = self.is_at_position(self.min);
+        let upper = self.is_at_position(self.max);
+
+        (lower && !upper) || (!lower && upper)
+    }
+
     fn is_valid_by_count(&self) -> bool {
         let char_cnt = self
             .password
@@ -75,7 +89,7 @@ pub fn main() -> Result<(), std::io::Error> {
 
     let correct_cnt = lines
         .iter()
-        .filter(|l| Password::from_str(l).unwrap().is_valid_by_count())
+        .filter(|l| Password::from_str(l).unwrap().is_valid_by_position())
         .count();
 
     println!("Correct passwords: {} out of {}", correct_cnt, lines.len());
