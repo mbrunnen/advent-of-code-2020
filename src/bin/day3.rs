@@ -54,9 +54,20 @@ pub fn main() -> Result<(), std::io::Error> {
 
     let filename = &args[1];
     let lines: Vec<String> = load_file(filename)?;
-    let slope = Slope::new(&lines, 3, 1);
+    let slopes = vec![
+        Slope::new(&lines, 1, 1),
+        Slope::new(&lines, 3, 1),
+        Slope::new(&lines, 5, 1),
+        Slope::new(&lines, 7, 1),
+        Slope::new(&lines, 1, 2),
+    ];
 
-    println!("{}", slope.filter(|&t| t).count());
+    let mut product = 1;
+    for s in slopes {
+        product *= s.filter(|&t| t).count();
+    }
+
+    println!("The product is: {}", product);
 
     Ok(())
 }
