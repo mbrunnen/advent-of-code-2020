@@ -1,13 +1,33 @@
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 
-pub fn load_file(filename: &str) -> Result<Vec<String>, std::io::Error> {
-    println!("Loading file {}", filename);
+#[derive(Debug)]
+pub struct Input {
+    pub day: usize,
+    pub lines: Vec<String>,
+}
 
-    let file = File::open(filename)?;
-    let buf = BufReader::new(file);
-    Ok(buf
-        .lines()
-        .map(|l| l.expect("Could not parse line"))
-        .collect())
+impl Input {
+    pub fn load(args: &[String]) -> Result<Self, String> {
+        if args.len() != 3 {
+            return Err(format!("Usage: {} DAY INPUT!", &args[0]));
+        }
+
+        let day = args[1].parse::<usize>().unwrap();
+        let filename = &args[2];
+
+        match File::open(filename) {
+            Ok(file) => {
+                let buf = BufReader::new(file);
+                Ok(Input {
+                    day,
+                    lines: buf
+                        .lines()
+                        .map(|l| l.expect("Could not parse line"))
+                        .collect(),
+                })
+            }
+            Err(e) => Err(format!("Error while reading the file: {}", e)),
+        }
+    }
 }

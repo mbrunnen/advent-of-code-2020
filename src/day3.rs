@@ -1,6 +1,8 @@
-use advent_of_code::input::load_file;
-use std::env;
-use std::io::{Error, ErrorKind};
+use crate::Challenge;
+
+pub struct Day3 {
+    lines: Vec<String>,
+}
 
 #[derive(Debug)]
 struct Slope {
@@ -42,34 +44,27 @@ impl Slope {
     }
 }
 
-pub fn main() -> Result<(), std::io::Error> {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() != 2 {
-        return Err(Error::new(
-            ErrorKind::Other,
-            "Please give exactly one positional argument!",
-        ));
+impl Challenge for Day3 {
+    fn new(lines: Vec<String>) -> Self {
+        Day3 { lines }
     }
 
-    let filename = &args[1];
-    let lines: Vec<String> = load_file(filename)?;
-    let slopes = vec![
-        Slope::new(&lines, 1, 1),
-        Slope::new(&lines, 3, 1),
-        Slope::new(&lines, 5, 1),
-        Slope::new(&lines, 7, 1),
-        Slope::new(&lines, 1, 2),
-    ];
+    fn run(&self) -> Result<String, String> {
+        let slopes = vec![
+            Slope::new(&self.lines, 1, 1),
+            Slope::new(&self.lines, 3, 1),
+            Slope::new(&self.lines, 5, 1),
+            Slope::new(&self.lines, 7, 1),
+            Slope::new(&self.lines, 1, 2),
+        ];
 
-    let mut product = 1;
-    for s in slopes {
-        product *= s.filter(|&t| t).count();
+        let mut product = 1;
+        for s in slopes {
+            product *= s.filter(|&t| t).count();
+        }
+
+        Ok(format!("The product is: {}", product))
     }
-
-    println!("The product is: {}", product);
-
-    Ok(())
 }
 
 #[cfg(test)]

@@ -1,8 +1,11 @@
-use advent_of_code::input::load_file;
+use crate::Challenge;
 use regex::Regex;
-use std::env;
 use std::num::ParseIntError;
 use std::str::FromStr;
+
+pub struct Day2 {
+    lines: Vec<String>,
+}
 
 #[derive(Debug)]
 struct Password {
@@ -64,25 +67,24 @@ impl Password {
     }
 }
 
-pub fn main() -> Result<(), std::io::Error> {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() != 2 {
-        panic!("Please give exactly one positional argument!")
+impl Challenge for Day2 {
+    fn new(lines: Vec<String>) -> Self {
+        Day2 { lines }
     }
 
-    let filename = &args[1];
+    fn run(&self) -> Result<String, String> {
+        let correct_cnt = self
+            .lines
+            .iter()
+            .filter(|l| Password::from_str(l).unwrap().is_valid_by_position())
+            .count();
 
-    let lines: Vec<String> = load_file(filename)?;
-
-    let correct_cnt = lines
-        .iter()
-        .filter(|l| Password::from_str(l).unwrap().is_valid_by_position())
-        .count();
-
-    println!("Correct passwords: {} out of {}", correct_cnt, lines.len());
-
-    Ok(())
+        Ok(format!(
+            "Correct passwords: {} out of {}",
+            correct_cnt,
+            self.lines.len()
+        ))
+    }
 }
 
 #[cfg(test)]

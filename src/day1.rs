@@ -1,32 +1,33 @@
-use advent_of_code::input::load_file;
-use std::env;
-use std::io;
+use crate::Challenge;
 
-fn main() -> io::Result<()> {
-    let args: Vec<String> = env::args().collect();
+pub struct Day1 {
+    lines: Vec<String>,
+}
 
-    if args.len() != 2 {
-        panic!("Please give exactly one positional argument!")
+impl Challenge for Day1 {
+    fn new(lines: Vec<String>) -> Self {
+        Day1 { lines }
     }
 
-    let filename = &args[1];
+    fn run(&self) -> Result<String, String> {
+        let nums: Vec<i32> = self
+            .lines
+            .iter()
+            .map(|l| l.parse::<i32>().unwrap_or(0))
+            .collect();
 
-    let lines: Vec<String> = load_file(filename)?;
-
-    println!("Loaded {} lines", lines.len());
-
-    let nums: Vec<i32> = lines
-        .iter()
-        .map(|l| l.parse::<i32>().unwrap_or(0))
-        .collect();
-
-    if let Some((x, y, z)) = find_three_summands(&nums[0], &nums[1..], 2020) {
-        println!("The product is: {} * {} * {} = {}", x, y, z, x * y * z);
-    } else {
-        println!("No pair was found!");
-    };
-
-    Ok(())
+        if let Some((x, y, z)) = find_three_summands(&nums[0], &nums[1..], 2020) {
+            Ok(format!(
+                "The product is: {} * {} * {} = {}",
+                x,
+                y,
+                z,
+                x * y * z
+            ))
+        } else {
+            Err(String::from("No pair was found!"))
+        }
+    }
 }
 
 fn find_two_summands(cur: &i32, rest: &[i32], sum: i32) -> Option<(i32, i32)> {
