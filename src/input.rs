@@ -21,6 +21,7 @@ impl Input {
                 let buf = BufReader::new(file);
                 Ok(Input {
                     day,
+                    // XXX: Here is no advantage. The users can call self.input.lines() instead of self.lines
                     lines: buf
                         .lines()
                         .map(|l| l.expect("Could not parse line"))

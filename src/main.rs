@@ -1,6 +1,6 @@
 use advent_of_code::input::Input;
 use advent_of_code::Challenge;
-use advent_of_code::{day1, day2, day3};
+use advent_of_code::{day1, day2, day3, day4};
 use std::env;
 use std::process;
 
@@ -8,7 +8,7 @@ pub fn main() {
     let args: Vec<String> = env::args().collect();
 
     let input = Input::load(&args).unwrap_or_else(|err| {
-        println!("Problem parsing arguments: {}", err);
+        eprintln!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
 
@@ -25,10 +25,14 @@ pub fn main() {
             let challenge = day3::Day3::new(input.lines);
             challenge.run()
         }
-        _ => Err(format!("Invalid day: {}", input.day)),
+        4 => {
+            let challenge = day4::Day4::new(input.lines);
+            challenge.run()
+        }
+        _ => unimplemented!("Invalid day: {}", input.day),
     }
     .unwrap_or_else(|err| {
-        println!("Application error: {}", err);
+        eprintln!("Application error: {}", err);
         process::exit(1);
     });
 
