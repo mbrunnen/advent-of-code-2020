@@ -62,6 +62,7 @@ impl Passport {
     }
 }
 
+// XXX: Use derive
 impl PartialEq for Passport {
     fn eq(&self, other: &Self) -> bool {
         self.byr == other.byr

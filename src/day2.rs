@@ -32,6 +32,7 @@ impl FromStr for Password {
     }
 }
 
+// XXX: Use derive
 impl PartialEq for Password {
     fn eq(&self, other: &Self) -> bool {
         self.min == other.min
