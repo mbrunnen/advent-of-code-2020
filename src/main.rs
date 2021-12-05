@@ -1,8 +1,11 @@
-use advent_of_code::input::Input;
-use advent_of_code::Challenge;
-use advent_of_code::{day1, day2, day3, day4};
+mod utils;
+mod days;
+
+use utils::input::Input;
 use std::env;
 use std::process;
+use days::{day1::*, day2::*, day3::*, day4::*};
+use crate::utils::challenge::Challenge;
 
 pub fn main() {
     let args: Vec<String> = env::args().collect();
@@ -14,19 +17,19 @@ pub fn main() {
 
     let result = match input.day {
         1 => {
-            let challenge = day1::Day1::new(input.lines);
+            let challenge = Day1::new(input.lines);
             challenge.run()
         }
         2 => {
-            let challenge = day2::Day2::new(input.lines);
+            let challenge = Day2::new(input.lines);
             challenge.run()
         }
         3 => {
-            let challenge = day3::Day3::new(input.lines);
+            let challenge = Day3::new(input.lines);
             challenge.run()
         }
         4 => {
-            let challenge = day4::Day4::new(input.lines);
+            let challenge = Day4::new(input.lines);
             challenge.run()
         }
         _ => unimplemented!("Invalid day: {}", input.day),

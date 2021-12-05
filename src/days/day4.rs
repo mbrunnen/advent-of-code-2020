@@ -1,4 +1,4 @@
-use crate::Challenge;
+use crate::utils::challenge::Challenge;
 
 pub struct Day4 {
     lines: Vec<String>,

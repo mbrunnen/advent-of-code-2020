@@ -1,4 +1,4 @@
-use crate::Challenge;
+use crate::utils::challenge::Challenge;
 use regex::Regex;
 use std::num::ParseIntError;
 use std::str::FromStr;
